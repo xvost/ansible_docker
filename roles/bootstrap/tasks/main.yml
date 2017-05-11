@@ -1,0 +1,8 @@
+- name: Update packages
+  include: update_pack.yml
+
+- name: Disable Selinux
+  include: selinux.yml
+
+- name: Set firewall rules
+  include: firewall.yml

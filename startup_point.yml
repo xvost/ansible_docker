@@ -1,0 +1,8 @@
+---
+- hosts: env-hosts
+  roles:
+    - bootstrap
+    - docker
+
+
+

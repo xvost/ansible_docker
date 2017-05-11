@@ -1,0 +1,6 @@
+- name: Set rule allow to http
+  shell: firewall-cmd --zone=public --permanent --add-service=http
+- name: Set rule allow to https
+  shell: firewall-cmd --zone=public --permanent --add-service=https
+- name: Remove rule for dhcpv6-client
+  shell: firewall-cmd --zone=public --permanent --remove-service=dhcpv6-client

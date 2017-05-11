@@ -1,0 +1,8 @@
+- name: Install docker
+  shell: curl -fsSL https://get.docker.com/ | sh
+
+- service:
+    name: docker
+    enabled: yes
+    state: started
+    
