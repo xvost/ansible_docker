@@ -1,9 +1,0 @@
-- name: Get status selinux
-  shell: /usr/sbin/sestatus | grep mode | awk '{print$3}'
-  register: current_mode
-
-- name: Backup config file selinux
-  shell: cp /etc/selinux/config /etc/selinux/config.dist
-
-- name: Set selinux mode to Disable
-  shell: cat /etc/selinux/config.dist | sed 's/enforcing/disabled/' > /etc/selinux/config

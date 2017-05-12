@@ -1,8 +1,20 @@
-- name: Install docker
-  shell: curl -fsSL https://get.docker.com/ | sh
+- name: Add Docker repo
+  yum_repository:
+    name: docker-ce
+    description: Docker CE Stable
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    gpgcheck: true
+    enabled: true
 
-- service:
+- name: Install Docker-ce package
+  yum:
+    name: "docker-ce"
+    state: latest
+    update_cache: true
+
+- name: Enable and start Docker service
+  service:
     name: docker
     enabled: yes
     state: started
-    

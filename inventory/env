@@ -1,4 +1,4 @@
-vps1 ansible_ssh_host=192.168.0.1 ansible_user=root
+vps1 ansible_ssh_host=185.156.179.152 ansible_user=root
 
 [env-hosts]
 vps1

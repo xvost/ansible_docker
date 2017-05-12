@@ -1,0 +1,33 @@
+### Update all packages
+
+- name: Update all packages
+  yum:
+    name: '*'
+    state: latest
+
+### Disable selinux
+
+-name: Disable selinux
+  selinux:
+    state: disabled
+
+### Set firewall rules
+
+- name: Add firewall rule: HTTPS
+  firewalld:
+    service: https
+    permanent: true
+    state: enabled
+
+- name: Add firewall rule: HTTP
+  firewalld:
+    service: http
+    permanent: true
+    state: enabled
+
+
+- name: Add firewall rule: SSH
+  firewalld:
+    service: ssh
+    permanent: true
+    state: enabled
