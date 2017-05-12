@@ -1,33 +1,48 @@
-### Update all packages
-
 - name: Update all packages
   yum:
     name: '*'
     state: latest
 
-### Disable selinux
-
--name: Disable selinux
+- name: Disable selinux
   selinux:
     state: disabled
 
-### Set firewall rules
-
-- name: Add firewall rule: HTTPS
+- name: Add firewall rule HTTPS
   firewalld:
     service: https
     permanent: true
     state: enabled
 
-- name: Add firewall rule: HTTP
+- name: Add firewall rule HTTP
   firewalld:
     service: http
     permanent: true
     state: enabled
 
 
-- name: Add firewall rule: SSH
+- name: Add firewall rule SSH
   firewalld:
     service: ssh
     permanent: true
     state: enabled
+
+- name: Add Docker repo
+  yum_repository:
+    name: docker-ce
+    description: Docker CE Stable
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    gpgcheck: true
+    enabled: true
+
+- name: Install Docker-ce package
+  yum:
+    name: "docker-ce"
+    state: latest
+    update_cache: true
+
+- name: Enable and start Docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started

@@ -1,5 +1,10 @@
 ---
 - hosts: env-hosts
+  gather_facts: false
+  tasks:
+    - name: Install python if os Ubuntu/Debian
+      raw: test -e apt-get && python || apt-get -qqy update && apt-get -qqy install python-minimal
+
+- hosts: env-hosts
   roles:
     - bootstrap
-    - docker
