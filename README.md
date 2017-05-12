@@ -9,7 +9,17 @@ Python 3.5.2+
 
 ## Usage
 
-Edit inventory/env
+Copy inventory/env.example to inventory/env
+
+```
+cp inventory/env.example inventory/env
+```
+
+Edit in inventory/env host addresses
+
+```
+editor inventory/env
+```
 
 Run
 
