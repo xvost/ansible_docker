@@ -1,20 +1,43 @@
-- name: Add Docker repo
-  yum_repository:
-    name: docker-ce
-    description: Docker CE Stable
-    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
-    gpgkey: https://download.docker.com/linux/centos/gpg
-    gpgcheck: true
-    enabled: true
+- name: Get latest wordpress
+  get_url:
+    dest: /opt
+    url: https://wordpress.org/latest.zip
+    mode: 640
 
-- name: Install Docker-ce package
-  yum:
-    name: "docker-ce"
-    state: latest
-    update_cache: true
+- unarchive:
+    src: /opt/latest.zip
+    dest: /opt/data
 
-- name: Enable and start Docker service
-  service:
-    name: docker
-    enabled: yes
-    state: started
+- name: Create and start mysql
+  docker_container:
+    name: database
+    image: mysql
+    state: present
+    volumes:
+    - /opt/db:/var/lib/mysql
+    env:
+      MYSQL_ROOT_PASSWORD: easypasswd
+
+- name: Create and start php-fpm
+  docker_container:
+    name: backend
+    image: bitnami/php-fpm
+    state: present
+    volumes:
+      - /opt/data:/var/www
+    links:
+      - "database:mysql"
+
+- name: Create and start nginx
+  docker_container:
+    name: frontend
+    image: nginx
+    state: present
+    volumes:
+      - /opt/nginx:/etc/nginx:ro
+    volumes_from:
+      - backend
+    expose:
+      - "80:80"
+    links:
+      - "backend:php"
