@@ -38,7 +38,10 @@
     enabled: yes
     state: started
 
-- name: Install docker-py package
+- name: Install Additional packages
   yum:
-    name: docker-python.x86_64
+    name: "{{ item }}"
     state: latest
+  with_items:
+    - "unzip"
+    - "docker-python.x86_64"
