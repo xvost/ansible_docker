@@ -1,7 +1,7 @@
 # Docker installer to CentOs 7
 ## Requirements
 
-Ansible 2.1.1.0
+Ansible 2.3.0
 
 Python 2.7.12+
 or
