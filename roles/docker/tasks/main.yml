@@ -1,18 +1,3 @@
-- name: Get latest wordpress
-  get_url:
-    url: https://wordpress.org/latest.zip
-    dest: /opt/wordpress.zip
-    mode: 640
-
-- unarchive:
-    src: /opt/wordpress.zip
-    dest: /opt/
-    remote_src: True
-  register: dir_name
-
-- name: Copy files to data
-  shell: cp -r /opt/wordpress/* /opt/data
-
 - name: Create and start mysql
   docker_container:
     name: database
@@ -22,31 +7,26 @@
     volumes:
     - /opt/db:/var/lib/mysql
     env:
-      MYSQL_ROOT_PASSWORD: easypasswd
+      MYSQL_ROOT_PASSWORD: myeasyrootpasswd
+      MYSQL_DATABASE: mywordpress
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: myeasypasswd
 
-- name: Create and start php-fpm
+
+- name: Create and start Wordpress
   docker_container:
-    name: backend
-    image: bitnami/php-fpm
+    name: Wordpress
+    image: wordpress
     state: started
     force_kill: yes
-    volumes:
-      - /opt/data:/var/www
-      - /opt/php5:/etc/php5:ro
+    ports:
+      - '8080:80'
     links:
-      - "database:mysql"
-
-- name: Create and start nginx
-  docker_container:
-    name: frontend
-    image: nginx
-    state: started
-    force_kill: yes
+      - "database:database"
     volumes:
-      - /opt/nginx:/etc/nginx:ro
-    volumes_from:
-      - backend
-    expose:
-      - "80:80"
-    links:
-      - "backend:php"
+      - /opt/wordpress:/var/www/html
+    env:
+      WORDPRESS_DB_HOST: database:3306
+      WORDPRESS_DB_USER: myuser
+      WORDPRESS_DB_PASSWORD: myeasypasswd
+      WORDPRESS_DB_NAME: mywordpress
